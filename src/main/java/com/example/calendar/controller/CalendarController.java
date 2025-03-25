@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.List;
 
 @RestController
@@ -49,5 +50,12 @@ public class CalendarController {
     ) {
 
         return new ResponseEntity<>(calendarService.updateCalendar(id,requestDto.getTodo(), requestDto.getWriter(), requestDto.getPassword()), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id,@RequestBody CalendarRequestDto requestDto){
+
+        calendarService.deleteTodo(id,requestDto.getPassword());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

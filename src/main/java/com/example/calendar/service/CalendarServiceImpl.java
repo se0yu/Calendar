@@ -50,4 +50,14 @@ public class CalendarServiceImpl implements CalendarService{
         return new CalendarResponseDto(calendar);
     }
 
+    @Override
+    public void deleteTodo(Long id, String password) {
+        int deleteRow = calendarRepository.deleteTodo(id,password);
+
+        if (deleteRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "일정 혹은 비밀번호를 다시 확인해 주세요. " + id);
+        }
+    }
+
+
 }

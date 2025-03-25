@@ -101,6 +101,15 @@ public class CalendarRepositoryImpl implements CalendarRepository{
         return updatedCalendar;
     }
 
+    @Override
+    public int deleteTodo(Long id, String password) {
+        String savedPassword = jdbcTemplate.queryForObject("select password from calendar where id = ?",String.class, id);
+        if(!savedPassword.equals(password)){
+            return 0;
+        }
+        return jdbcTemplate.update("delete from calendar where id = ?", id);
+    }
+
     //DB에 저장된 TIMESTAMP -> String(yyyy-MM-dd)로 변환
     @Override
     public String timeStampToString(Timestamp timestamp) {
