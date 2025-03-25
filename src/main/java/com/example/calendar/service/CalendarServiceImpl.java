@@ -6,6 +6,8 @@ import com.example.calendar.entity.Calendar;
 import com.example.calendar.repository.CalendarRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CalendarServiceImpl implements CalendarService{
 
@@ -22,4 +24,10 @@ public class CalendarServiceImpl implements CalendarService{
 
         return calendarRepository.saveTodo(calendar);
     }
+
+    @Override
+    public List<CalendarResponseDto> findAllTodo() {
+        return calendarRepository.findAllTodo();
+    }
+
 }

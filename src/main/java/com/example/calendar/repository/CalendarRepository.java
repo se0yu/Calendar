@@ -5,9 +5,15 @@ import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public interface CalendarRepository {
-    CalendarResponseDto saveTodo(Calendar calendar);
 
     String timeStampToString (Timestamp timestamp);
+
+    CalendarResponseDto saveTodo(Calendar calendar);
+
+    List<CalendarResponseDto> findAllTodo();
+
+
 }

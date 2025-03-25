@@ -13,9 +13,10 @@ public class Calendar {
     private String createdAt;
     private String updatedAt;
 
-    public Calendar(String todo, String writer, String password){
+    public Calendar(String todo, String writer, String password) {
         this.todo = todo;
         this.writer = writer;
         this.password = password;
     }
+
 }
