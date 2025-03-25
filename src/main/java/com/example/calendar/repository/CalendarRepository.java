@@ -18,7 +18,7 @@ public interface CalendarRepository {
 
     Calendar findTodoById(Long id);
 
-    int updateCalendar(Long id, String todo, String writer, String password);
+    int updateTodo(Long id, String todo, String writer, String password);
 
     int deleteTodo(Long id, String password);
 }

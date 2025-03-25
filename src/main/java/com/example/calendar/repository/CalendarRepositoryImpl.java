@@ -62,23 +62,6 @@ public class CalendarRepositoryImpl implements CalendarRepository{
     @Override
     public List<CalendarResponseDto> findAllTodo(String writer, String updatedAt) {
         //password값을 제외한 데이터 출력(updateAt 기준으로 내림차순 정렬)
-//        parameter로 writer, updatedAt 입력 받아 특정 일정만 출력하기
-//        String writerForSql = "'%" + writer + "%'";
-//        String updatedAtForSql = "'" + updatedAt + "'";
-//        String sql = """
-//        select id, todo, writer, createdAt, updatedAt
-//        from calendar
-//        where writer like :writerForSql and date(updatedAt) = date(:updatedAtForSql)
-//        order by updatedAt desc
-//        """;
-//
-//
-//        select id, todo, writer, createdAt, updatedAt
-//        from calendar
-//        where (:writer is null or writer like :writerForSql)
-//        and (:updatedAt is null or date(updatedAt) = date(:updatedAtForSql))
-//        order by updatedAt desc
-
         return jdbcTemplate.query("select id, todo, writer, createdAt, updatedAt from calendar order by updatedAt desc",calendarRowMapper());
     }
 
@@ -91,14 +74,14 @@ public class CalendarRepositoryImpl implements CalendarRepository{
 
     //일정 수정
     @Override
-    public int updateCalendar(Long id, String todo, String writer, String password) {
+    public int updateTodo(Long id, String todo, String writer, String password) {
         String savedPassword = jdbcTemplate.queryForObject("select password from calendar where id = ?",String.class, id);
         if(!savedPassword.equals(password)){
             return 0;
         }
-        int updatedCalendar = jdbcTemplate.update("update calendar set todo = ?, writer = ?, updatedAt = now() where id = ? and password = ? ", todo, writer, id, password);
+        int updatedTodo = jdbcTemplate.update("update calendar set todo = ?, writer = ?, updatedAt = now() where id = ? and password = ? ", todo, writer, id, password);
 
-        return updatedCalendar;
+        return updatedTodo;
     }
 
     @Override

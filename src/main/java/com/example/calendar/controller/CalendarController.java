@@ -49,7 +49,7 @@ public class CalendarController {
             @RequestBody CalendarRequestDto requestDto
     ) {
 
-        return new ResponseEntity<>(calendarService.updateCalendar(id,requestDto.getTodo(), requestDto.getWriter(), requestDto.getPassword()), HttpStatus.OK);
+        return new ResponseEntity<>(calendarService.updateTodo(id,requestDto.getTodo(), requestDto.getWriter(), requestDto.getPassword()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

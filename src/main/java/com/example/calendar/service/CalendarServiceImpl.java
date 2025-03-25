@@ -40,9 +40,9 @@ public class CalendarServiceImpl implements CalendarService{
     }
 
     @Override
-    public CalendarResponseDto updateCalendar(Long id, String todo, String writer, String password ) {
+    public CalendarResponseDto updateTodo(Long id, String todo, String writer, String password ) {
 
-        int updateRow = calendarRepository.updateCalendar(id, todo, writer, password);
+        int updateRow = calendarRepository.updateTodo(id, todo, writer, password);
         if (updateRow == 0) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "올바른 일정, 혹은 비밀번호인지 확인해주세요." + id);
         }
