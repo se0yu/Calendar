@@ -13,7 +13,7 @@ public interface CalendarRepository {
 
     CalendarResponseDto saveTodo(Calendar calendar);
 
-    List<CalendarResponseDto> findAllTodo();
+    List<CalendarResponseDto> findAllTodo(String writer, String updatedAt);
 
 
 }

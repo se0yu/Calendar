@@ -28,9 +28,12 @@ public class CalendarController {
 
     //일정 전체 조회
     @GetMapping
-    public List<CalendarResponseDto> findAllTodo(){
+    public List<CalendarResponseDto> findAllTodo(
+            @RequestParam(required = false) String writer,
+            @RequestParam(required = false) String updatedAt
+    ){
 
-        return calendarService.findAllTodo();
+        return calendarService.findAllTodo(writer,updatedAt);
     }
 
 }

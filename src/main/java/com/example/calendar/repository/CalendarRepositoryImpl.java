@@ -54,9 +54,27 @@ public class CalendarRepositoryImpl implements CalendarRepository{
     }
 
     @Override
-    public List<CalendarResponseDto> findAllTodo() {
+    public List<CalendarResponseDto> findAllTodo(String writer, String updatedAt) {
+        //password값을 제외한 데이터 출력(updateAt 기준으로 내림차순 정렬)
+//        parameter로 writer, updatedAt 입력 받아 특정 일정만 출력하기
+//        String writerForSql = "'%" + writer + "%'";
+//        String updatedAtForSql = "'" + updatedAt + "'";
+//        String sql = """
+//        select id, todo, writer, createdAt, updatedAt
+//        from calendar
+//        where writer like :writerForSql and date(updatedAt) = date(:updatedAtForSql)
+//        order by updatedAt desc
+//        """;
+//
+//
+//        select id, todo, writer, createdAt, updatedAt
+//        from calendar
+//        where (:writer is null or writer like :writerForSql)
+//        and (:updatedAt is null or date(updatedAt) = date(:updatedAtForSql))
+//        order by updatedAt desc
 
-        return jdbcTemplate.query("select id, todo, writer, createdAt, updatedAt from calendar",calendarRowMapper());
+
+        return jdbcTemplate.query("select id, todo, writer, createdAt, updatedAt from calendar order by updatedAt desc",calendarRowMapper());
     }
 
     //DB에 저장된 TIMESTAMP -> String(yyyy-MM-dd)로 변환
@@ -74,8 +92,8 @@ public class CalendarRepositoryImpl implements CalendarRepository{
                             rs.getLong("id"),
                             rs.getString("todo"),
                             rs.getString("writer"),
-                            rs.getString("createdAt"),
-                            rs.getString("updatedAt")
+                            timeStampToString(rs.getTimestamp("createdAt")),
+                            timeStampToString(rs.getTimestamp("updatedAt"))
                     );
                 }
             };

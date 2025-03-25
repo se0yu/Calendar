@@ -8,5 +8,5 @@ import java.util.List;
 public interface CalendarService {
     CalendarResponseDto saveTodo(CalendarRequestDto requestDto);
 
-    List<CalendarResponseDto> findAllTodo();
+    List<CalendarResponseDto> findAllTodo(String writer, String updatedAt);
 }

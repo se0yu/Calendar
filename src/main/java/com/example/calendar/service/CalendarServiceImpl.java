@@ -26,8 +26,8 @@ public class CalendarServiceImpl implements CalendarService{
     }
 
     @Override
-    public List<CalendarResponseDto> findAllTodo() {
-        return calendarRepository.findAllTodo();
+    public List<CalendarResponseDto> findAllTodo(String writer, String updatedAt) {
+        return calendarRepository.findAllTodo(writer, updatedAt);
     }
 
 }
