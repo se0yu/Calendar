@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,11 @@ public class CalendarController {
     ){
 
         return calendarService.findAllTodo(writer,updatedAt);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CalendarResponseDto> findTodoById(@PathVariable Long id){
+        return new ResponseEntity<>(calendarService.findTodoById(id), HttpStatus.OK);
     }
 
 }

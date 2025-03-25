@@ -2,11 +2,13 @@ package com.example.calendar.repository;
 
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
+import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -17,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @Repository
@@ -28,6 +31,7 @@ public class CalendarRepositoryImpl implements CalendarRepository{
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    //새 일정 추가
     @Override
     public CalendarResponseDto saveTodo(Calendar calendar) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -53,6 +57,7 @@ public class CalendarRepositoryImpl implements CalendarRepository{
 
     }
 
+    //일정 목록 전체 조회
     @Override
     public List<CalendarResponseDto> findAllTodo(String writer, String updatedAt) {
         //password값을 제외한 데이터 출력(updateAt 기준으로 내림차순 정렬)
@@ -73,8 +78,14 @@ public class CalendarRepositoryImpl implements CalendarRepository{
 //        and (:updatedAt is null or date(updatedAt) = date(:updatedAtForSql))
 //        order by updatedAt desc
 
-
         return jdbcTemplate.query("select id, todo, writer, createdAt, updatedAt from calendar order by updatedAt desc",calendarRowMapper());
+    }
+
+    //일정 단일 조회 Pathvariable = id
+    @Override
+    public Calendar findTodoById(Long id) {
+        List<Calendar> todoList = jdbcTemplate.query("select * from calendar where id = ? order by updatedAt desc",calendarRowMapperByCalendar(),id);
+        return todoList.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exist id = " + id));
     }
 
     //DB에 저장된 TIMESTAMP -> String(yyyy-MM-dd)로 변환
@@ -97,5 +108,21 @@ public class CalendarRepositoryImpl implements CalendarRepository{
                     );
                 }
             };
+    }
+
+    private RowMapper<Calendar> calendarRowMapperByCalendar(){
+        return new RowMapper<Calendar>() {
+            @Override
+            public Calendar mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new Calendar(
+                        rs.getLong("id"),
+                        rs.getString("todo"),
+                        rs.getString("writer"),
+                        rs.getString("password"),
+                        timeStampToString(rs.getTimestamp("createdAt")),
+                        timeStampToString(rs.getTimestamp("updatedAt"))
+                );
+            }
+        };
     }
 }

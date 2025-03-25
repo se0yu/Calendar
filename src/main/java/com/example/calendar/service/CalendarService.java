@@ -9,4 +9,6 @@ public interface CalendarService {
     CalendarResponseDto saveTodo(CalendarRequestDto requestDto);
 
     List<CalendarResponseDto> findAllTodo(String writer, String updatedAt);
+
+    CalendarResponseDto findTodoById(Long id);
 }

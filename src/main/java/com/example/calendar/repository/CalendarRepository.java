@@ -6,6 +6,7 @@ import com.example.calendar.entity.Calendar;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 public interface CalendarRepository {
 
@@ -15,5 +16,5 @@ public interface CalendarRepository {
 
     List<CalendarResponseDto> findAllTodo(String writer, String updatedAt);
 
-
+    Calendar findTodoById(Long id);
 }
