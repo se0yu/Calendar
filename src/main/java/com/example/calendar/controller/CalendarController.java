@@ -42,4 +42,12 @@ public class CalendarController {
         return new ResponseEntity<>(calendarService.findTodoById(id), HttpStatus.OK);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<CalendarResponseDto> updateTodo(
+            @PathVariable Long id,
+            @RequestBody CalendarRequestDto requestDto
+    ) {
+
+        return new ResponseEntity<>(calendarService.updateCalendar(id,requestDto.getTodo(), requestDto.getWriter(), requestDto.getPassword()), HttpStatus.OK);
+    }
 }

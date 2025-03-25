@@ -11,4 +11,6 @@ public interface CalendarService {
     List<CalendarResponseDto> findAllTodo(String writer, String updatedAt);
 
     CalendarResponseDto findTodoById(Long id);
+
+    CalendarResponseDto updateCalendar(Long id, String todo, String writer, String password);
 }

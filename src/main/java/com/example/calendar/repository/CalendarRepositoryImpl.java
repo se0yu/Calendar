@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -86,6 +87,18 @@ public class CalendarRepositoryImpl implements CalendarRepository{
     public Calendar findTodoById(Long id) {
         List<Calendar> todoList = jdbcTemplate.query("select * from calendar where id = ? order by updatedAt desc",calendarRowMapperByCalendar(),id);
         return todoList.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exist id = " + id));
+    }
+
+    //일정 수정
+    @Override
+    public int updateCalendar(Long id, String todo, String writer, String password) {
+        String savedPassword = jdbcTemplate.queryForObject("select password from calendar where id = ?",String.class, id);
+        if(!savedPassword.equals(password)){
+            return 0;
+        }
+        int updatedCalendar = jdbcTemplate.update("update calendar set todo = ?, writer = ?, updatedAt = now() where id = ? and password = ? ", todo, writer, id, password);
+
+        return updatedCalendar;
     }
 
     //DB에 저장된 TIMESTAMP -> String(yyyy-MM-dd)로 변환

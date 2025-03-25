@@ -17,4 +17,6 @@ public interface CalendarRepository {
     List<CalendarResponseDto> findAllTodo(String writer, String updatedAt);
 
     Calendar findTodoById(Long id);
+
+    int updateCalendar(Long id, String todo, String writer, String password);
 }
