@@ -1,16 +1,12 @@
 package com.example.calendar.repository;
 
-import com.example.calendar.dto.CalendarRequestDto;
 import com.example.calendar.dto.CalendarResponseDto;
 import com.example.calendar.entity.Calendar;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Optional;
 
 public interface CalendarRepository {
 
-    String timeStampToString (Timestamp timestamp);
 
     CalendarResponseDto saveTodo(Calendar calendar);
 

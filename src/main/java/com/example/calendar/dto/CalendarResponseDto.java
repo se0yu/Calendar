@@ -1,8 +1,11 @@
 package com.example.calendar.dto;
 
 import com.example.calendar.entity.Calendar;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.sql.Timestamp;
 
 
 @Getter
@@ -11,8 +14,11 @@ public class CalendarResponseDto {
     private Long id;
     private String todo;
     private String writer;
-    private String createdAt;
-    private String updatedAt;
+    //TimeStamp -> yyyy-mm-dd 형식의 String으로 반환
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Timestamp createdAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Timestamp updatedAt;
 
     public CalendarResponseDto(Calendar calendar){
         this.id = calendar.getId();

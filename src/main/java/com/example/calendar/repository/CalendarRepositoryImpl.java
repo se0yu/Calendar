@@ -13,14 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 
 @Repository
@@ -52,9 +49,8 @@ public class CalendarRepositoryImpl implements CalendarRepository{
         //key값 long으로 변환
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        String updatedAt = timeStampToString(timestampNow);
 
-        return new CalendarResponseDto(key.longValue(),calendar.getTodo(),calendar.getWriter(), updatedAt, updatedAt);
+        return new CalendarResponseDto(key.longValue(),calendar.getTodo(),calendar.getWriter(), timestampNow, timestampNow);
 
     }
 
@@ -69,21 +65,24 @@ public class CalendarRepositoryImpl implements CalendarRepository{
     @Override
     public Calendar findTodoById(Long id) {
         List<Calendar> todoList = jdbcTemplate.query("select * from calendar where id = ? order by updatedAt desc",calendarRowMapperByCalendar(),id);
-        return todoList.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exist id = " + id));
+        return todoList.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "존재하지 않는 일정입니다. " + id));
     }
 
     //일정 수정
     @Override
     public int updateTodo(Long id, String todo, String writer, String password) {
+        //db에 저장된 비밀번호와 일치하는지 확인
         String savedPassword = jdbcTemplate.queryForObject("select password from calendar where id = ?",String.class, id);
         if(!savedPassword.equals(password)){
             return 0;
         }
+        //
         int updatedTodo = jdbcTemplate.update("update calendar set todo = ?, writer = ?, updatedAt = now() where id = ? and password = ? ", todo, writer, id, password);
 
         return updatedTodo;
     }
 
+    //일정 삭제
     @Override
     public int deleteTodo(Long id, String password) {
         String savedPassword = jdbcTemplate.queryForObject("select password from calendar where id = ?",String.class, id);
@@ -93,12 +92,6 @@ public class CalendarRepositoryImpl implements CalendarRepository{
         return jdbcTemplate.update("delete from calendar where id = ?", id);
     }
 
-    //DB에 저장된 TIMESTAMP -> String(yyyy-MM-dd)로 변환
-    @Override
-    public String timeStampToString(Timestamp timestamp) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return timestamp.toLocalDateTime().format(formatter);
-    }
 
     private RowMapper<CalendarResponseDto> calendarRowMapper (){
             return new RowMapper<CalendarResponseDto>() {
@@ -108,8 +101,8 @@ public class CalendarRepositoryImpl implements CalendarRepository{
                             rs.getLong("id"),
                             rs.getString("todo"),
                             rs.getString("writer"),
-                            timeStampToString(rs.getTimestamp("createdAt")),
-                            timeStampToString(rs.getTimestamp("updatedAt"))
+                            rs.getTimestamp("createdAt"),
+                            rs.getTimestamp("updatedAt")
                     );
                 }
             };
@@ -124,10 +117,11 @@ public class CalendarRepositoryImpl implements CalendarRepository{
                         rs.getString("todo"),
                         rs.getString("writer"),
                         rs.getString("password"),
-                        timeStampToString(rs.getTimestamp("createdAt")),
-                        timeStampToString(rs.getTimestamp("updatedAt"))
+                        rs.getTimestamp("createdAt"),
+                        rs.getTimestamp("updatedAt")
                 );
             }
         };
     }
+
 }
