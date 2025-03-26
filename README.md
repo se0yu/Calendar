@@ -25,11 +25,12 @@ java 기반으로 만들어진 일정 관리 프로그램 입니다.
 
 
 
-## : ERD
+##  ERD
 
 ![image](https://github.com/user-attachments/assets/1fbcd628-c3df-4950-b2f6-684306d3dc88)
 
-
+##  API 명세서
+[api 명세서](https://documenter.getpostman.com/view/43159028/2sAYkKJxt1)
 ## :wrench:개발 환경
 - java 17
 
@@ -37,7 +38,7 @@ java 기반으로 만들어진 일정 관리 프로그램 입니다.
 
 - Spring Boot 3.4.4
 
-- MYSQL
+- Mysql
 
 
 ## :alarm_clock:개발 기간

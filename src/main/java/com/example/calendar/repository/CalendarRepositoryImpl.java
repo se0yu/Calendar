@@ -39,7 +39,7 @@ public class CalendarRepositoryImpl implements CalendarRepository{
         Timestamp timestampNow = Timestamp.valueOf(LocalDateTime.now());
 
         Map<String, Object> parameters = new HashMap<>();
-
+        //db에 넣을 데이터 추가
         parameters.put("todo", calendar.getTodo());
         parameters.put("writer", calendar.getWriter());
         parameters.put("password", calendar.getPassword());
@@ -57,8 +57,14 @@ public class CalendarRepositoryImpl implements CalendarRepository{
     //일정 목록 전체 조회
     @Override
     public List<CalendarResponseDto> findAllTodo(String writer, String updatedAt) {
-        //password값을 제외한 데이터 출력(updateAt 기준으로 내림차순 정렬)
-        return jdbcTemplate.query("select id, todo, writer, createdAt, updatedAt from calendar order by updatedAt desc",calendarRowMapper());
+        String sql = """
+                select * from calendar
+                where(writer = ? or ? is null)
+                and (date(updatedAt) = ? or ? is null)
+                order by updatedAt desc
+                """;
+
+        return jdbcTemplate.query(sql,calendarRowMapper(),writer, writer, updatedAt, updatedAt);
     }
 
     //일정 단일 조회 Pathvariable = id
