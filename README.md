@@ -27,22 +27,17 @@ java 기반으로 만들어진 일정 관리 프로그램 입니다.
 
 <<<<<<< HEAD
 ##  ERD
-=======
-## ERD
->>>>>>> e8eaaab12d0d4ec3e293125fa9bf4dfbe45c0811
+
+
 
 ![image](https://github.com/user-attachments/assets/53f5caa5-f3b6-4f36-9d55-690ca01f8139)
 
-<<<<<<< HEAD
+
 ##  API 명세서
 [api 명세서](https://documenter.getpostman.com/view/43159028/2sAYkKJxt1)
-=======
 
-## API 명세서
 
-[api명세서](https://documenter.getpostman.com/view/43159028/2sAYkKJxt1)
 
->>>>>>> e8eaaab12d0d4ec3e293125fa9bf4dfbe45c0811
 ## :wrench:개발 환경
 - java 17
 
